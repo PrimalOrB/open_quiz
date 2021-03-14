@@ -18,100 +18,39 @@ var questionEl, questionID, timeInterval, timeLeft;
 var highScores = getData();
     // set penalty
 var penaltyTime = 10
+    // set bonus
+var bonusTime = 10    
 
 // On page load, populate DOM with start page
 startHTMl()
 
 // Question Array
-    // Questions inspried by items found at:
-        // https://www.topzenith.com/2020/04/javascript-quiz-with-questions-and-answers.html
-        // https://www.javatpoint.com/result.jsp?answer=obj.method%28%29&x=39&y=7
-        // General knowledge
+var questions = []
 
-var questions = [
-    { 'question': 'What is the HTML tag under which one can write the JavaScript code?',   'answersObj': [
-            { 'answer': ' <javascript> ... </javascript>',          'value': false },
-            { 'answer': '<scripted> ... </scripted>',               'value': false },
-            { 'answer': '<script>...  </script>',                   'value': true },
-            { 'answer': '<js> ... </js>',                           'value': false },
-        ]
-    },
-    { 'question': 'What is the correct file extension for Javascript files?',   'answersObj': [
-            { 'answer': '.java',                                    'value': false },
-            { 'answer': '.js',                                      'value': true },
-            { 'answer': '.javascript',                              'value': false },
-            { 'answer': '.script',                                  'value': false },
-        ]
-    },
-    { 'question': 'Which of the following is the correct syntax to display “You have a message!” in an alert box using JavaScript?',   'answersObj': [
-            { 'answer': 'alertbox(“You have a message!”);',         'value': false },
-            { 'answer': 'msgbox(“You have a message!”);',           'value': false },
-            { 'answer': 'alert(“You have a message!”);',            'value': true },
-            { 'answer': 'msg(“You have a message!”);',              'value': false },
-        ]
-    },
-    { 'question': 'What is the output of this statement? 33 == 33.0',   'answersObj': [
-            { 'answer': 'true',                                     'value': true },
-            { 'answer': 'false',                                    'value': false },
-            { 'answer': '33',                                       'value': false },
-            { 'answer': 'none of the above',                        'value': false },
-        ]
-    },
-    { 'question': 'What is the output or this statement? "45" === 45',   'answersObj': [
-            { 'answer': 'true',                                     'value': false },
-            { 'answer': 'false',                                    'value': true },
-            { 'answer': '45',                                       'value': false },
-            { 'answer': 'none of the above',                        'value': false },
-        ]
-    },
-    { 'question': `Which event is specific to the keyboard`,   'answersObj': [
-            { 'answer': 'onclick',                                  'value': false },
-            { 'answer': 'onfocus',                                  'value': false },
-            { 'answer': 'onkeydown',                                'value': true },
-            { 'answer': 'onkeyboardpress',                          'value': false },
-        ]
-    },
-    { 'question': `What does the programming princinple of DRY refer to`,   'answersObj': [
-            { 'answer': 'Do not repeat yourself',                   'value': true },
-            { 'answer': 'Defensive rushing yards',                  'value': false },
-            { 'answer': 'Design reference year',                    'value': false },
-            { 'answer': 'Do not spill liquids on your keyboard',    'value': false },
-        ]
-    },
-    { 'question': `If (a === 5) and (b === 20), what will the return from the function( a * b )`,   'answersObj': [
-            { 'answer': '100',                                      'value': true },
-            { 'answer': '520',                                      'value': false },
-            { 'answer': '25',                                       'value': false },
-            { 'answer': 'null',                                     'value': false },
-        ]
-    },
-    { 'question': `How could you select a DOM element defined as <p id="test">`,   'answersObj': [
-            { 'answer': 'document.getElementsByTagName("p")',       'value': false },
-            { 'answer': 'document.querySelector("#test")',          'value': false },
-            { 'answer': 'document.getElementsById("test")',         'value': false },
-            { 'answer': 'All answers will select the element ',     'value': true },
-        ]
-    },
-    { 'question': `For "var obj = { 'param1':1,  'param2':2 }", what will return if you call "obj.length"`,   'answersObj': [
-            { 'answer': '1, 2',                                     'value': false },
-            { 'answer': 'i',                                        'value': false },
-            { 'answer': '2',                                        'value': false },
-            { 'answer': 'undefined ',                               'value': true },
-        ]
-    }
-]
+// Store questions
+function storeQuestions() {
+    localStorage.setItem( "quiz-questions", JSON.stringify( questions ) );
+}
+
+// Retrieve questions
+function getQuestions() {
+    questions = JSON.parse( localStorage.getItem( 'quiz-questions' ) );
+    console.log(questions)
+}
 
 // Start Page
 function startHTMl() {
+    getQuestions()
+           
         // clear container
     container.innerHTML = ""
-        
+
         //title section
     var startDiv = document.createElement( 'div' );
     startDiv.setAttribute( 'id', 'start-el' );
     startDiv.setAttribute( 'class', 'block' );
     var startTitle = document.createElement( 'h1' );
-    startTitle.textContent = 'coding quiz challenge'
+    startTitle.textContent = 'question and answer'
     var startPara = document.createElement( 'p' );
     startPara.innerHTML = `Try to answer the following code-related questions within the time limit. </br>
     Keep in mind that incorrect or unanswered answers will penalize your score/time by ten seconds! </br>
@@ -126,11 +65,215 @@ function startHTMl() {
     startDiv.appendChild( buttonDiv );
     container.appendChild( startDiv );
 
+        // question list
+    var questionDiv = document.createElement( 'div' );
+    questionDiv.setAttribute( 'id', 'question-stick' )
+    var questionBut = document.createElement( 'button' );
+    questionBut.setAttribute( 'id', 'question-list-but');
+    if( !questions ) { 
+        questions = []
+        storeQuestions()
+    }
+    questionBut.textContent = 'You currently have ' + questions.length + ' questions in your game.';
+    questionDiv.appendChild( questionBut );
+
+    container.appendChild( questionDiv );
+
+    console.log(questions)
+
         // listen to start button to begin the quiz
     document.getElementById( 'start-button' ).addEventListener( 'click', function() { 
         event.preventDefault();
-        questionHTML();
+        getQuestions()
+        if( questions.length === 0 ) {
+            alert('You currently have no questions!')
+        } else {
+            questionHTML();
+        }
     })
+
+       // listen to start button to begin the quiz
+       document.getElementById( 'question-list-but' ).addEventListener( 'click', function() { 
+        event.preventDefault();
+        questionsPage();
+    })
+}
+
+// Questions Page
+function questionsPage() {
+         // clear container
+         container.innerHTML = ""
+         // clear timer
+     timer.innerHTML = ""
+     
+         //end game section
+     var questionsDiv = document.createElement( 'div' );
+     questionsDiv.setAttribute( 'id', 'questions-container' );
+     questionsDiv.setAttribute( 'class', 'block' );
+
+    // head
+    var headerBlock = document.createElement( 'div' );
+    headerBlock.setAttribute( 'class', 'questions-header' )
+
+
+     var questionsTitle = document.createElement( 'h1' );
+     questionsTitle.textContent = 'question list';
+     var addButtonDiv = document.createElement( 'div' );
+     var addButton = document.createElement( 'button' );
+     addButton.setAttribute( 'id', 'add-button' );
+     addButton.textContent = 'add new questions';
+     addButtonDiv.appendChild( addButton );
+     headerBlock.appendChild( questionsTitle )
+     headerBlock.appendChild( addButtonDiv )
+ 
+         // score list
+     var questionContainer = document.createElement( 'div' );
+     questionContainer.setAttribute( 'id', 'question-list' );
+     questionContainer.setAttribute( 'class', 'question-list' );
+     var questionUl = document.createElement( 'ul' );
+     questionUl.setAttribute( 'id', 'q-ul' );
+     questionUl.setAttribute( 'class', 'q-ul' );
+     questionContainer.appendChild( questionUl );
+ 
+         // controls
+     var controlsContainer = document.createElement( 'div' );
+     controlsContainer.setAttribute( 'id', 'controls' );
+     var backButtonDiv = document.createElement( 'div' );
+     var backButton = document.createElement( 'button' );
+     backButton.setAttribute( 'id', 'back-button' );
+     backButton.textContent = 'go back';
+     backButtonDiv.appendChild( backButton );
+     controlsContainer.appendChild( backButtonDiv );
+
+ 
+     questionsDiv.appendChild( headerBlock );
+     questionsDiv.appendChild( questionContainer );
+     questionsDiv.appendChild( controlsContainer );
+ 
+     container.appendChild( questionsDiv )
+     
+         // get refreshed data
+    getQuestions()
+         // post question
+     for ( var i = 0; i < questions.length; i ++ ) {
+             // generate li items for appending to ul
+         var  li = document.createElement('li')
+         li.setAttribute( 'class', 'list-item ')
+         var questionI = questions[i].question;
+         var answerArr = questions[i].answersObj;
+         var answer = answerArr.map(function(e) { return e.value; }).indexOf(true);
+        //  var liContainer = document.createElement('div');
+        //  liContainer.setAttribute( 'class', 'list-item-container')
+         var idHolder = document.createElement( 'i' );
+         var id = i + 1
+         idHolder.textContent = id
+         var questionHolder= document.createElement( 'div' );
+         questionHolder.setAttribute( 'class', 'question-entry' )
+         questionHolder.textContent = `  ${questionI}    (  ${answer}   )`  
+         var deleteHolder = document.createElement( 'div' );
+         deleteHolder.setAttribute( 'class', 'delete' );
+         deleteHolder.textContent = 'X'
+         li.appendChild( idHolder )
+         li.appendChild( questionHolder )
+         li.appendChild( deleteHolder )
+         questionUl.appendChild(li)
+     }
+
+        // listen to add button to open modal
+    document.getElementById( 'add-button' ).addEventListener( 'click', function() { 
+        console.log('add new open modal')
+        modalControl()
+    })
+ 
+         // listen to back button to return to start page
+     document.getElementById( 'back-button' ).addEventListener( 'click', function() { 
+         event.preventDefault();
+         startHTMl();
+     })
+        // listen for click on delete button of question, and remove from array
+     $('.q-ul').on('click', '.delete', function() {
+        var val = $(this)
+            .closest('.list-item')
+            .children('i')
+            .text();
+
+        questions.splice( val-1, 1 ) 
+        storeQuestions()  
+        questionsPage();
+      })
+
+}
+
+// Modal Operation
+function modalControl() {
+        // modal
+    var modal = document.getElementById("addNewModal");
+        // display modal
+    modal.style.display = "block";
+
+        // span (close button)
+    var span = document.getElementsByClassName("close")[0];
+
+        //button (add button)
+    var button = document.getElementById( 'add-submit' )
+
+        // close on clicking span
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+        // close on click outside modal
+    window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+        }
+    }
+}
+
+// Add new
+function addNewEntry(event) {
+    event.preventDefault()
+    console.log('add2')
+    var newQuestion = document.getElementById( 'question_new' ).value
+    var newAnswer1 = document.getElementById( 'answer1' ).value
+    var newRadio1 = document.getElementById( 'radio1' ).checked
+    var newAnswer2 = document.getElementById( 'answer2' ).value
+    var newRadio2 = document.getElementById( 'radio2' ).checked
+    var newAnswer3 = document.getElementById( 'answer3' ).value
+    var newRadio3 = document.getElementById( 'radio3' ).checked
+    var newAnswer4 = document.getElementById( 'answer4' ).value
+    var newRadio4 = document.getElementById( 'radio4' ).checked
+
+    // check entries for data
+    if( !newQuestion || !newAnswer1 || !newAnswer2 || !newAnswer3 || !newAnswer4 ) {
+        alert('Please fill in all fields')
+        return
+    }
+
+    // check radios are not all false
+    if ( !newRadio1 && !newRadio2 && !newRadio3 && !newRadio4 ) {
+        alert('Please check correct answer')
+        return
+    }
+
+    var current = questions.length
+
+    questions[current] = { 
+        'question': newQuestion,
+        'answersObj': [
+            { 'answer': newAnswer1,     'value': newRadio1 },
+            { 'answer': newAnswer2,     'value': newRadio2 },
+            { 'answer': newAnswer3,     'value': newRadio3 },
+            { 'answer': newAnswer4,     'value': newRadio4 },
+        ]
+    }
+    storeQuestions()
+    console.log(questions)
+
+    var modal = document.getElementById("addNewModal");
+    modal.style.display = "none";
+
+    questionsPage()
 }
 
 // Pause Quiz
@@ -361,14 +504,22 @@ function timerStart() {
 
 // Penalize Time
 function penalize() {
-    timeLeft = timeLeft - 10
+    timeLeft = timeLeft - penaltyTime
 
     var penalty = document.createElement( 'div' );
     penalty.setAttribute( 'class', 'penalty' );
     penalty.textContent = `- ${penaltyTime}s`
     timer.appendChild( penalty )
+}
 
+// Bonus Time
+function bonus() {
+    timeLeft = timeLeft + bonusTime
 
+    var bonus = document.createElement( 'div' );
+    bonus.setAttribute( 'class', 'bonus' );
+    bonus.textContent = `+ ${bonusTime}s`
+    timer.appendChild( bonus )
 }
 
 // Init Quiz
@@ -501,6 +652,8 @@ window.addEventListener('keyup', function(e) {
 function processResponse(e) {
     var responsePost = document.getElementById( 'response-el' )
         if( e === 'true' ) {
+            // add time
+            bonus()
             // post true
             responsePost.children[0].textContent = 'Correct!'
             responsePost.children[0].classList.remove('false')
@@ -519,3 +672,6 @@ function processResponse(e) {
     }
 }
 
+//listen for add new question button
+var addSubmitButton = document.getElementById( 'add-submit' )
+addSubmitButton.addEventListener( "click", addNewEntry )
