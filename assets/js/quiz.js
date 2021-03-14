@@ -273,6 +273,16 @@ function addNewEntry(event) {
     var modal = document.getElementById("addNewModal");
     modal.style.display = "none";
 
+    document.getElementById( 'question_new' ).value = ""
+    document.getElementById( 'answer1' ).value = ""
+    document.getElementById( 'radio1' ).checked = false
+    document.getElementById( 'answer2' ).value = ""
+    document.getElementById( 'radio2' ).checked = false
+    document.getElementById( 'answer3' ).value = ""
+    document.getElementById( 'radio3' ).checked = false
+    document.getElementById( 'answer4' ).value = ""
+    document.getElementById( 'radio4' ).checked = false
+
     questionsPage()
 }
 
