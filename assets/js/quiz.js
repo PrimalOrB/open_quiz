@@ -52,9 +52,7 @@ function startHTMl() {
     var startTitle = document.createElement( 'h1' );
     startTitle.textContent = 'question and answer'
     var startPara = document.createElement( 'p' );
-    startPara.innerHTML = `Try to answer the following code-related questions within the time limit. </br>
-    Keep in mind that incorrect or unanswered answers will penalize your score/time by ten seconds! </br>
-    You can answer questions by clicking with your mouse, or pushing the corresponding keyboard button`;
+    startPara.innerHTML = `Read the question and choose the right answer`;
     var buttonDiv = document.createElement( 'div' )
     var startButton = document.createElement( 'button' );
     startButton.setAttribute( 'id', 'start-button');
@@ -348,14 +346,14 @@ function endGameHTML() {
             // calculate score
     var score = timeLeft
         // set default message end
-    var message = ', great job! Save your achievement to the high score board.'  
+    var message = ', great job! Save your score.'  
     if( questions.length > questionID ) {
             // calculate remaining questions
         var remainder = questions.length - questionID
             // calculate score penalty per remainder
         score = timeLeft - ( remainder * 10 )
             // change message to explain penlaty
-        message = `, due to the timer running out with <strong> ${ questions.length - questionID } </strong> ${ ( remainder === 1 ) ? 'question' : 'questions' } remaining. Save your score so you can try and beat it next time!`
+        message = `, time ran out with<strong> ${ questions.length - questionID } </strong> ${ ( remainder === 1 ) ? 'question' : 'questions' } remaining. Save your score!`
     }
    
         // clear container
@@ -373,7 +371,7 @@ function endGameHTML() {
         //span  
     var scorePara = document.createElement( 'span' );
     scorePara.setAttribute( 'id', 'score-span' );
-    scorePara.innerHTML = `Your final score is <strong id="score"> ${ score } </strong> ${ message } `;
+    scorePara.innerHTML = `Your score is <strong id="score"> ${ score } </strong> ${ message } `;
 
         //form
     var scoreForm = document.createElement( 'form' );
