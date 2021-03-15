@@ -18,8 +18,10 @@ var questionEl, questionID, timeInterval, timeLeft;
 var highScores = getData();
     // load settings settings
 var perTime, penaltyTime, bonusTime;
-var settings = {}
+var settings = {};
+console.log(settings)
 getSettings();
+console.log(settings)
 
 // On page load, populate DOM with start page
 startHTMl()
@@ -76,8 +78,6 @@ function startHTMl() {
 
     container.appendChild( questionDiv );
 
-    console.log(questions)
-
         // listen to start button to begin the quiz
     document.getElementById( 'start-button' ).addEventListener( 'click', function() { 
         event.preventDefault();
@@ -104,9 +104,9 @@ function questionsPage() {
     timer.innerHTML = ""
         // get settings
     getSettings()
-    perTime = settings['setting-time-per'] ? settings['setting-time-per'] : 8;
-    penaltyTime = settings['setting-time-penalty'] ? settings['setting-time-penalty'] : 8;
-    bonusTime = settings['setting-time-bonus'] ? settings['setting-time-bonus'] : 8;
+    // perTime = settings['setting-time-per'] ? settings['setting-time-per'] : 8;
+    // penaltyTime = settings['setting-time-penalty'] ? settings['setting-time-penalty'] : 8;
+    // bonusTime = settings['setting-time-bonus'] ? settings['setting-time-bonus'] : 8;
 
      
          //end game section
@@ -318,7 +318,9 @@ function questionsPage() {
 
         settings[`${attr}`] = value
 
-        storeSettings()
+        console.log( settings )
+
+        storeSettings( settings )
         
       });
 
@@ -739,24 +741,30 @@ function getData() {
 }
 
 // Store user data
-function storeSettings( ) {
-var stringEntry = JSON.stringify( settings )
+function storeSettings( e ) {
+
+    console.log( settings )
+    var stringEntry = JSON.stringify( settings )
+    console.log(stringEntry)
     // set to local storage
-localStorage.setItem('quiz-stored-settings', stringEntry)
+    localStorage.setItem('quiz-stored-settings', stringEntry)
 }
 
 // get settings
 function getSettings() {
     // declare as empty array
-    settings = []
+    settings = {}
         // get local storage string
     var getStorage = localStorage.getItem('quiz-stored-settings')
         // if string is null, return empty array
     if ( !getStorage ) { 
-        return settings 
+        settings['setting-time-per'] = 8;
+        settings['setting-time-penalty'] = 8;
+        settings['setting-time-bonus'] = 8;
+    } else {
+        // parse string and set settings
+        settings = JSON.parse( getStorage )
     }
-        // parse string and set highScores
-    settings = JSON.parse( getStorage )
     perTime = parseFloat( settings[`setting-time-per`] )
     penaltyTime = parseFloat( settings[`setting-time-penalty`] )
     bonusTime = parseFloat( settings[`setting-time-bonus`] )
