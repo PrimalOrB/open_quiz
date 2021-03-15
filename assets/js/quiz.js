@@ -16,10 +16,10 @@ var timer = document.getElementById('timer');
 var questionEl, questionID, timeInterval, timeLeft; 
     // load storage data as current highScores array
 var highScores = getData();
-    // set penalty
-var penaltyTime = 10
-    // set bonus
-var bonusTime = 10    
+    // load settings settings
+var perTime, penaltyTime, bonusTime;
+var settings = {}
+getSettings();
 
 // On page load, populate DOM with start page
 startHTMl()
@@ -35,13 +35,12 @@ function storeQuestions() {
 // Retrieve questions
 function getQuestions() {
     questions = JSON.parse( localStorage.getItem( 'quiz-questions' ) );
-    console.log(questions)
 }
 
 // Start Page
 function startHTMl() {
     getQuestions()
-           
+        
         // clear container
     container.innerHTML = ""
 
@@ -72,7 +71,7 @@ function startHTMl() {
         questions = []
         storeQuestions()
     }
-    questionBut.textContent = 'You currently have ' + questions.length + ' questions in your game.';
+    questionBut.textContent = 'You currently have ' + questions.length + ' questions in your game. Click here to add questions, or change game settings';
     questionDiv.appendChild( questionBut );
 
     container.appendChild( questionDiv );
@@ -97,12 +96,18 @@ function startHTMl() {
     })
 }
 
-// Questions Page
+// Questions / Settings Page
 function questionsPage() {
          // clear container
-         container.innerHTML = ""
+    container.innerHTML = ""
          // clear timer
-     timer.innerHTML = ""
+    timer.innerHTML = ""
+        // get settings
+    getSettings()
+    perTime = settings['setting-time-per'] ? settings['setting-time-per'] : 8;
+    penaltyTime = settings['setting-time-penalty'] ? settings['setting-time-penalty'] : 8;
+    bonusTime = settings['setting-time-bonus'] ? settings['setting-time-bonus'] : 8;
+
      
          //end game section
      var questionsDiv = document.createElement( 'div' );
@@ -143,10 +148,56 @@ function questionsPage() {
      backButtonDiv.appendChild( backButton );
      controlsContainer.appendChild( backButtonDiv );
 
+
+        // settings
+    var settingsDiv = document.createElement( 'div' );
+    settingsDiv.setAttribute( 'id', 'settings-div' );
+    var settingsTitle = document.createElement( 'h1' );
+    settingsTitle.textContent = 'Settings';
+    
+    var settingPer = document.createElement( 'div' );
+    settingPer.setAttribute( 'class', 'setting-line' );
+    settingPer.setAttribute( 'id', 'setting-time-per' );
+    var settingTimePerData = document.createElement( 'span' );
+    settingTimePerData.textContent = perTime;
+    var settingTimePer = document.createElement( 'p' );
+    settingTimePer.textContent = 'seconds per question';
+
+    var settingPenalty = document.createElement( 'div' );
+    settingPenalty.setAttribute( 'class', 'setting-line' );
+    settingPenalty.setAttribute( 'id', 'setting-time-penalty' );
+    var settingTimePenaltyData = document.createElement( 'span' );
+    settingTimePenaltyData.textContent = penaltyTime;
+    var settingTimePenalty = document.createElement( 'p' );
+    settingTimePenalty.textContent = 'second penalty ( wrong answer / remaining questions at the end )';
+
+    var settingBonus = document.createElement( 'div' );
+    settingBonus.setAttribute( 'class', 'setting-line' );
+    settingBonus.setAttribute( 'id', 'setting-time-bonus' );
+    var settingTimeBonusData = document.createElement( 'span' );
+    settingTimeBonusData.textContent = bonusTime;
+    var settingTimeBonus = document.createElement( 'p' );
+    settingTimeBonus.textContent = 'second bonus ( correct answer )';
+
+    settingPer.appendChild( settingTimePerData )
+    settingPer.appendChild( settingTimePer )
+
+    settingPenalty.appendChild( settingTimePenaltyData )
+    settingPenalty.appendChild( settingTimePenalty )
+
+    settingBonus.appendChild( settingTimeBonusData )
+    settingBonus.appendChild( settingTimeBonus )
+    
+    
+    settingsDiv.appendChild( settingsTitle )
+    settingsDiv.appendChild( settingPer )
+    settingsDiv.appendChild( settingPenalty )
+    settingsDiv.appendChild( settingBonus )
  
      questionsDiv.appendChild( headerBlock );
      questionsDiv.appendChild( questionContainer );
      questionsDiv.appendChild( controlsContainer );
+     questionsDiv.appendChild( settingsDiv );
  
      container.appendChild( questionsDiv )
      
@@ -199,6 +250,77 @@ function questionsPage() {
         storeQuestions()  
         questionsPage();
       })
+
+
+        // Listen for settings enter
+    $('#settings-div').on('click', 'div', function() {
+        var value = $(this.children)
+            .closest('span')
+            .text()
+            .trim();
+        var text = $(this.children)
+            .closest('p')
+            .text()            
+            .trim();
+        var attr = $(this)
+            .attr( 'id' );
+          
+        var textInput = $( '<textarea>' )
+            .addClass( 'setting-entry' )
+            .attr( 'id', attr )
+            .attr( 'data-text', text )
+            .attr( 'maxlength', 3 )
+            .attr( 'rows', 1 )
+            .val(value);
+        $(this).replaceWith(textInput)
+        textInput.trigger( 'focus' )        
+
+
+    })  
+
+        // Listen for setting changes
+    $('#settings-div').on('blur', 'textarea', function() {
+        // get the text area's current value/test
+        var value = $(this)
+          .val()
+          .trim();
+
+        if( !parseFloat( value ) > 0 ) {
+            alert('Entry must be a number greater than 0')
+            return
+        }  
+      
+        // get the parent ul's id attribute
+        var attr = $(this)
+          .attr('id');
+      
+        // get the task's position in the list of other li elements
+        var text = $(this)
+          .attr( 'data-text')
+
+          // recreate element
+        var div = $( '<div>' )
+          .addClass( 'setting-line' )
+          .attr( 'id', attr );
+
+        var span = $( '<span>' )
+            .text( value );
+        
+        var p = $( '<p>' )
+            .text( text );
+
+        div
+            .append(span)  
+            .append(p)          
+      
+        // replace textarea with p element
+        $(this).replaceWith(div)  
+
+        settings[`${attr}`] = value
+
+        storeSettings()
+        
+      });
 
 }
 
@@ -299,8 +421,9 @@ function pauseQuiz() {
     return response
 }
 
-// Question List Page
+// Question Game Playing List Page
 function questionHTML() {
+    getSettings()
         // clear container
     container.innerHTML = ""
 
@@ -339,6 +462,7 @@ function questionHTML() {
     timerStart()
         // start quiz
     initQuiz()
+    
 }
 
 // End Game Page
@@ -353,7 +477,7 @@ function endGameHTML() {
             // calculate score penalty per remainder
         score = timeLeft - ( remainder * 10 )
             // change message to explain penlaty
-        message = `, time ran out with<strong> ${ questions.length - questionID } </strong> ${ ( remainder === 1 ) ? 'question' : 'questions' } remaining. Save your score!`
+        message = `, time ran out with <strong> ${ questions.length - questionID } </strong> ${ ( remainder === 1 ) ? 'question' : 'questions' } left. Save your score!`
     }
    
         // clear container
@@ -494,8 +618,9 @@ function highScoreHTML() {
 
 // Timer function
 function timerStart() {
+    perTime = settings['setting-time-per'] ? settings['setting-time-per'] : 8;
     // set timer value based on the number of questions
-    timeLeft = questions.length * 8;
+    timeLeft = questions.length * perTime;
     timer.textContent = timeLeft + ' seconds'
     // timer interval countdown
     timeInterval = setInterval(function() {
@@ -523,6 +648,7 @@ function penalize() {
 // Bonus Time
 function bonus() {
     timeLeft = timeLeft + bonusTime
+    console.log(bonusTime)
 
     var bonus = document.createElement( 'div' );
     bonus.setAttribute( 'class', 'bonus' );
@@ -612,6 +738,33 @@ function getData() {
     return highScores
 }
 
+// Store user data
+function storeSettings( ) {
+var stringEntry = JSON.stringify( settings )
+    // set to local storage
+localStorage.setItem('quiz-stored-settings', stringEntry)
+}
+
+// get settings
+function getSettings() {
+    // declare as empty array
+    settings = []
+        // get local storage string
+    var getStorage = localStorage.getItem('quiz-stored-settings')
+        // if string is null, return empty array
+    if ( !getStorage ) { 
+        return settings 
+    }
+        // parse string and set highScores
+    settings = JSON.parse( getStorage )
+    perTime = parseFloat( settings[`setting-time-per`] )
+    penaltyTime = parseFloat( settings[`setting-time-penalty`] )
+    bonusTime = parseFloat( settings[`setting-time-bonus`] )
+    console.log(settings)
+        // return
+    return settings
+}
+
 // sort user data
 function sortData() {
     highScores.sort( ( a, b ) => b.score-a.score )
@@ -671,6 +824,7 @@ function processResponse(e) {
     } else if ( e === 'false' ) {
             // remove time
             penalize()
+            console.log(timeLeft)
             // post false
             responsePost.children[0].textContent = 'Wrong!'
             responsePost.children[0].classList.remove('true')

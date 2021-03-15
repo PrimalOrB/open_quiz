@@ -5,6 +5,7 @@
   --color-primary-faded: rgba(141, 209, 212, 0.25);
   /* #a6c5dd */
   --color-secondary: rgba(168, 201, 230, 1);
+  --color-secondary-faded: rgba(168, 201, 230, 0.25);
 }
 
 html, body {
@@ -353,6 +354,57 @@ small {
 .questions-header div {
   width: auto;
 }
+
+#settings-div {
+  margin-top: 2em;
+  width: 100%;
+  line-height: 1.5;
+}
+
+.setting-line {
+  padding: 5px;
+  background-color: var(--color-primary-faded);
+  margin-bottom: 5px;
+  border-radius: 10px;
+  box-shadow: inset 1px 2px 3px 0px rgba(0, 0, 0, 0.35);
+}
+
+.settingBonus {
+  display: flex;
+}
+
+#settings-div span {
+  width: auto;
+  padding-left: 5px;
+}
+
+#settings-div p {
+  display: inline; 
+  margin: 0;
+  text-align: left;
+  width: auto;
+  padding-left: 5px;
+}
+
+.setting-entry {
+  padding: 5px;
+  background-color: var(--color-secondary-faded);
+  border-radius: 10px;
+  border: 2px solid var(--color-primary);
+  box-shadow: 1px 2px 3px 0px rgba(0, 0, 0, 0.35);
+}
+
+textarea {
+  outline: none;
+  border: none;
+  resize: none;
+  width: 100%;
+  font-size:initial;
+  line-height: 1.5;
+  margin: 0
+}
+
+
 
 
 /* W3 Schools Modal */
