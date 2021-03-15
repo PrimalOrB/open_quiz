@@ -1,4 +1,4 @@
-# JavaScript Code Quiz
+# User Generated Quiz
 
 ## Purpose
 Functional quiz web application to ask multiple choice questions about anything!
