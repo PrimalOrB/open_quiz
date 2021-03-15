@@ -19,9 +19,7 @@ var highScores = getData();
     // load settings settings
 var perTime, penaltyTime, bonusTime;
 var settings = {};
-console.log(settings)
 getSettings();
-console.log(settings)
 
 // On page load, populate DOM with start page
 startHTMl()
@@ -209,16 +207,12 @@ function questionsPage() {
          var  li = document.createElement('li')
          li.setAttribute( 'class', 'list-item ')
          var questionI = questions[i].question;
-         var answerArr = questions[i].answersObj;
-         var answer = answerArr.map(function(e) { return e.value; }).indexOf(true);
-        //  var liContainer = document.createElement('div');
-        //  liContainer.setAttribute( 'class', 'list-item-container')
          var idHolder = document.createElement( 'i' );
          var id = i + 1
          idHolder.textContent = id
          var questionHolder= document.createElement( 'div' );
          questionHolder.setAttribute( 'class', 'question-entry' )
-         questionHolder.textContent = `  ${questionI}    (  ${answer}   )`  
+         questionHolder.textContent = `  ${questionI}`  
          var deleteHolder = document.createElement( 'div' );
          deleteHolder.setAttribute( 'class', 'delete' );
          deleteHolder.textContent = 'X'
@@ -230,7 +224,7 @@ function questionsPage() {
 
         // listen to add button to open modal
     document.getElementById( 'add-button' ).addEventListener( 'click', function() { 
-        console.log('add new open modal')
+        // console.log('add new open modal')
         modalControl()
     })
  
@@ -318,8 +312,6 @@ function questionsPage() {
 
         settings[`${attr}`] = value
 
-        console.log( settings )
-
         storeSettings( settings )
         
       });
@@ -355,7 +347,6 @@ function modalControl() {
 // Add new
 function addNewEntry(event) {
     event.preventDefault()
-    console.log('add2')
     var newQuestion = document.getElementById( 'question_new' ).value
     var newAnswer1 = document.getElementById( 'answer1' ).value
     var newRadio1 = document.getElementById( 'radio1' ).checked
@@ -390,7 +381,6 @@ function addNewEntry(event) {
         ]
     }
     storeQuestions()
-    console.log(questions)
 
     var modal = document.getElementById("addNewModal");
     modal.style.display = "none";
@@ -650,7 +640,6 @@ function penalize() {
 // Bonus Time
 function bonus() {
     timeLeft = timeLeft + bonusTime
-    console.log(bonusTime)
 
     var bonus = document.createElement( 'div' );
     bonus.setAttribute( 'class', 'bonus' );
@@ -743,9 +732,7 @@ function getData() {
 // Store user data
 function storeSettings( e ) {
 
-    console.log( settings )
     var stringEntry = JSON.stringify( settings )
-    console.log(stringEntry)
     // set to local storage
     localStorage.setItem('quiz-stored-settings', stringEntry)
 }
@@ -768,7 +755,6 @@ function getSettings() {
     perTime = parseFloat( settings[`setting-time-per`] )
     penaltyTime = parseFloat( settings[`setting-time-penalty`] )
     bonusTime = parseFloat( settings[`setting-time-bonus`] )
-    console.log(settings)
         // return
     return settings
 }
@@ -832,7 +818,6 @@ function processResponse(e) {
     } else if ( e === 'false' ) {
             // remove time
             penalize()
-            console.log(timeLeft)
             // post false
             responsePost.children[0].textContent = 'Wrong!'
             responsePost.children[0].classList.remove('true')
