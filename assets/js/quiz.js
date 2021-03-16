@@ -479,12 +479,6 @@ function addNewEntry(event) {
     var newQuestion = $('#question-new')
         .val()
 
-    var current = questions.length
-    questions[current] = { 
-        'question': newQuestion,
-        'answersObj': []
-    }
-
     var isValid = false
 
     function validateForm() {
@@ -500,6 +494,12 @@ function addNewEntry(event) {
     if( !isValid  ) {
         alert('Please fill in all fields')
         return
+    }
+
+    var current = questions.length
+    questions[current] = { 
+        'question': newQuestion,
+        'answersObj': []
     }
 
     // push answers to current array
