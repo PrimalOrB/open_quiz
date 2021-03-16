@@ -50,6 +50,7 @@ html, body {
 
 #high-button,
 #settings-button,
+#home-button,
 #start-button,
 #submit-button,
 #back-button,
@@ -71,9 +72,18 @@ html, body {
   box-shadow: 1px 2px 4px 0px rgba(0, 0, 0, 0.35);
 }
 
-#high-button .fas {
-  margin-right: 1em;
+#high-button,
+#high-scores,
+#settings-gear {
+  display: flex;
+  flex-wrap: nowrap;
 }
+
+#scores-text,
+#home-text,
+#settings-text {
+  display: none
+}  
 
 #add-submit {
   padding: 20px;
@@ -105,6 +115,7 @@ html, body {
 
 #high-button:hover,
 #settings-button:hover,
+#home-button:hover,
 #start-button:hover,
 #submit-button:hover,
 #back-button:hover,
@@ -123,6 +134,7 @@ html, body {
 
 #high-button:active,
 #settings-button:active,
+#home-button:active,
 #start-button:active,
 #submit-button:active,
 #back-button:active,
@@ -535,5 +547,18 @@ textarea {
 
 .form-line input[type=text]:focus {
   background-color: var(--color-primary-faded);
+}
+
+
+@media screen and (min-width: 768px) {
+  #high-button .fas {
+    margin-right: 1em;
+  }
+
+  #scores-text,
+  #home-text,
+  #settings-text {
+    display: inline
+  }  
 }
 

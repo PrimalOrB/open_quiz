@@ -29,8 +29,8 @@ $('#high-scores').click( function() {
     }
 })    
 
-// settings Scored Button Click --jQuery
-$('#settings-gear').click( function() { 
+// Home Scored Button Click --jQuery
+$('#home-link').click( function() { 
         // prevent button default
     event.preventDefault();
         // run pause quiz to see if confirmation of aborting active quiz is required
@@ -41,9 +41,25 @@ $('#settings-gear').click( function() {
         clearInterval(timeInterval)
         timeLeft = 0
             // proceed to high score page
-        questionsPage() 
+            startHTMl() 
     }   
 })    
+
+// settings Scored Button Click --jQuery
+$('#settings-gear').click( function() { 
+    // prevent button default
+event.preventDefault();
+        // run pause quiz to see if confirmation of aborting active quiz is required
+    var confirmExit = pauseQuiz()
+        // if true
+    if ( confirmExit) {
+            // stop the interval 
+        clearInterval(timeInterval)
+        timeLeft = 0
+            // proceed to high score page
+        questionsPage() 
+    }   
+})   
 
     // get settings
 getSettings();
@@ -68,6 +84,9 @@ function getQuestions() {
 function startHTMl() {
         // load questions
     getQuestions()
+
+    $('#timer')
+        .html( "" )  
 
         //title section 
     var startTitle = $( '<h1>' )

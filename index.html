@@ -15,13 +15,27 @@
     <header>
         <!-- container for head elemend to utilize flexbox -->
         <div id="head-container">
+            <!-- div to hold button for home, high scores, and settings link -->
             <div id="head-sub-container">
-                <!-- div to hold button for high scores link -->
-                <div class="head-item" id="high-scores"><button id="high-button"><i class="fas fa-list-ul"></i>high
-                        scores</button></div>
-                <!-- div to hold button for high scores link -->
-                <div class="head-item" id="settings-gear"><button id="settings-button"><i
-                            class="fas fa-cogs"></i></button></div>
+                <div class="head-item" id="home-link">
+                    <button id="home-button">
+                        <i class="fas fa-home"></i>
+                        <div id="home-text">home</div>
+                    </button>
+                </div>
+                <div class="head-item" id="high-scores">
+                    <button id="high-button">
+                        <i class="fas fa-list-ul"></i>
+                        <div id="scores-text">high scores</div>
+                    </button>
+                </div>
+
+                <div class="head-item" id="settings-gear">
+                    <button id="settings-button">
+                        <i class="fas fa-cogs"></i>
+                        <div id="settings-text">settings</div>
+                    </button>
+                </div>
             </div>
             <!-- div to hold timer -->
             <div class="head-item" id="timer"></div>
