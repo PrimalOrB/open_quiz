@@ -26,7 +26,9 @@ https://primalorb.github.io/open_quiz/
 
 ## Application Flow
 * Settings / Question Setup
-  * Add new question button with modal popup to define new questions/answer objects. There is a checkbox to idenfity the correct answer
+  * Add new question button with modal popup to define new questions/answer objects. 
+    *  The first answer entry is the "true" value
+    *  Add additional wrong answers by pressing the add button
   * Questions are displayed in a list, and can be individually deleted
   * Time settings are individually controlled. Just click on the field to make it editable, and then click out to update the value
 
