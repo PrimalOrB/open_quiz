@@ -49,7 +49,8 @@ html, body {
 #clear-button,
 #question-list-but,
 #add-button,
-#add-submit {
+#add-submit,
+#add-new-answer {
   font-weight: bold;
   width: 100%;
   height: 100%;
@@ -62,6 +63,24 @@ html, body {
   background-color: var(--color-secondary);
   box-shadow: 1px 2px 4px 0px rgba(0, 0, 0, 0.35);
 }
+
+#add-submit {
+  padding: 20px;
+  font-size: larger;
+}
+
+#add-new-answer {
+  background-color: var(--color-primary);
+  margin: 1em;
+}
+
+.subtitle {
+  display: block;
+  margin-top: 2em;
+  padding-left: 2em;
+  font-size: small;
+}
+
 
 #question-sticky {
   position: sticky;
@@ -80,9 +99,14 @@ html, body {
 #clear-button:hover,
 #question-list-but:hover,
 #add-button:hover,
-#add-submit:hover {
+#add-submit:hover,
+#add-new-answer:hover {
   transform: scale(1.05);
   background-color: var(--color-primary);
+}
+
+#add-new-answer:hover {
+  background-color: yellow;
 }
 
 #high-button:active,
@@ -92,7 +116,8 @@ html, body {
 #clear-button:active,
 #question-list-but:active,
 #add-button:active,
-#add-submit:active {
+#add-submit:active,
+#add-new-answer:active {
   transform: scale(1.05);
   background-color: yellow;
 }
@@ -199,10 +224,6 @@ span {
 
 .wrong-answer {
   border: 3px solid red;
-}
-
-.placeholder {
-  border: 3px solid yellow;
 }
 
 ol,
@@ -472,12 +493,16 @@ textarea {
   align-items: center;
 }
 
-.form-line {
+.form-line:not(.small) {
   width: 90%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   margin: 15px 0;
+}
+
+.small {
+  width: 50%;
 }
 
 .form-line input[type=text] {

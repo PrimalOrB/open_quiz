@@ -250,11 +250,6 @@ function questionsPage() {
         modalControl()
      })
 
-    // document.getElementById( 'add-button' ).addEventListener( 'click', function() { 
-    //     // console.log('add new open modal')
-    //     modalControl()
-    // })
- 
          // listen to back button to return to start page
      document.getElementById( 'back-button' ).addEventListener( 'click', function() { 
          event.preventDefault();
@@ -352,7 +347,7 @@ function modalControl() {
         // display modal
     modal.style.display = "block";
 
-    $('#question_new')
+    $('#question-new')
         .focus();
 
         // close on clicking span
@@ -373,10 +368,17 @@ function modalControl() {
 function modalQuestion() {
     var submitButton = $('<button>')
         .attr('id', 'add-submit' )
-        .text( 'add new question' );
+        .text( 'submit new question' );
     var submit = $( '<div>' )
         .addClass( 'form-line del' )
         .append( submitButton )
+
+    var newAnswerButton = $('<button>')
+        .attr('id', 'add-new-answer' )
+        .text( 'add new wrong answer' );
+    var addAnswer = $( '<div>' )
+        .addClass( 'form-line small del' )
+        .append( newAnswerButton )
 
     var questionLabel = $( '<label>' )
         .attr( 'for', 'question_new' )
@@ -385,7 +387,7 @@ function modalQuestion() {
     var questionInput = $( '<input>' )
         .attr( 'type', 'text' )
         .attr( 'id', 'question-new' )
-        .attr( 'placeholder', 'New Question' );
+        .attr( 'placeholder', 'New question' );
 
     var question = $( '<div>' )
         .addClass( 'form-line del' )
@@ -399,7 +401,7 @@ function modalQuestion() {
     var answerCorrectInput = $( '<input>' )
         .attr( 'type', 'text' )
         .attr( 'id', 'answer_1' )
-        .attr( 'placeholder', 'Correct Answer' )
+        .attr( 'placeholder', 'Correct answer' )
         .attr( 'data-answer', 'true' )
         .addClass( 'correct-answer answer-entry' );
 
@@ -408,19 +410,6 @@ function modalQuestion() {
         .append( answerCorrectLabel )
         .append( answerCorrectInput );
 
-    $('.form-container')
-        .append( submit )
-        .append( question )
-        .append( answerCorrect )   
-      
-    modalAnswers()    
-    
-    var addSubmitButton = document.getElementById( 'add-submit' )
-    addSubmitButton.addEventListener( "click", addNewEntry )
-}
-
-// Modal Answers (dynamic) --jQuery
-function modalAnswers() {
     var answerWrongLabel = $( '<label>' )
         .attr( 'for', 'answer_false' )
         .text( 'Wrong Answer:' );
@@ -428,42 +417,59 @@ function modalAnswers() {
     var answerWrongInput = $( '<input>' )
         .attr( 'type', 'text' )
         .attr( 'id', 'answer_false' )
-        .attr( 'placeholder', 'Enter Wrong Answer' )
+        .attr( 'placeholder', 'Enter wrong answer' )
         .attr( 'data-answer', 'false' )
         .addClass( 'wrong-answer answer-entry' );
 
     var answerWrong = $( '<div>' )
         .addClass( 'form-line del' )
         .append( answerWrongLabel )
-        .append( answerWrongInput );
-
-    var answerWrongLabelDisabled = $( '<label>' )
-        .attr( 'for', 'answer_false' )
-        .text( 'Wrong Answer:' );
-
-    var answerWrongInputDisabled = $( '<input>' )
-        .attr( 'type', 'text' )
-        .attr( 'id', 'answer_false' )
-        .attr( 'placeholder', 'Click to add new wrong answer' )
-        .attr( 'data-answer', 'false' )
-        .addClass( 'placeholder' )
-        .attr( 'readonly', 'readonly' );
-
-    var answerWrongDisabled = $( '<div>' )
-        .addClass( 'form-line del' )
-        .append( answerWrongLabelDisabled )
-        .append( answerWrongInputDisabled );
+        .append( answerWrongInput );    
 
     $('.form-container')
-        .append( answerWrong )    
-        .append( answerWrongDisabled )
+        .append( submit )
+        .append( addAnswer)
+        .append( question )
+        .append( answerCorrect )  
+        .append( answerWrong ); 
 
-    $('input[readonly]').click(function () {
-        $(this)
-            .closest( 'div' )
-            .remove()
+    var label = $( '<i>' )
+        .addClass( 'subtitle' )
+        .text( '** Answers will be shuffled while playing the quiz' )
+
+    $('.modal-content')  
+        .append( label )  
+
+    var addSubmitButton = document.getElementById( 'add-submit' )
+    addSubmitButton.addEventListener( "click", addNewEntry )
+
+    $('#add-new-answer').click( function() {
+        event.preventDefault()
         modalAnswers()
-        });    
+    })
+}
+
+// Modal Answers (dynamic) --jQuery
+function modalAnswers() {
+    
+    var answerWrongLabel = $( '<label>' )
+    .attr( 'for', 'answer_false' )
+    .text( 'Wrong Answer:' );
+
+    var answerWrongInput = $( '<input>' )
+    .attr( 'type', 'text' )
+    .attr( 'id', 'answer_false' )
+    .attr( 'placeholder', 'Enter wrong answer' )
+    .attr( 'data-answer', 'false' )
+    .addClass( 'wrong-answer answer-entry' );
+
+    var answerWrong = $( '<div>' )
+        .addClass( 'form-line del' )
+        .append( answerWrongLabel )
+        .append( answerWrongInput );
+
+    $('.form-container') 
+        .append( answerWrong )
 }
 
 // Add new --jQuery
@@ -478,15 +484,20 @@ function addNewEntry(event) {
         'question': newQuestion,
         'answersObj': []
     }
-    
-    var correctAnswer = $('.correct-answer')
-        .val()
 
-    var wrongAnswer = $('.correct-answer')
-        .val()
+    var isValid = false
 
+    function validateForm() {
+        isValid = true;
+        $('.answer-entry').each(function() {
+            if ( $(this).val() === '' || !newQuestion )
+                isValid = false;
+        });
+        return isValid;
+    }    
+    validateForm()
     // check entries for data
-    if( !newQuestion || !correctAnswer || !wrongAnswer  ) {
+    if( !isValid  ) {
         alert('Please fill in all fields')
         return
     }
@@ -656,8 +667,6 @@ function endGameHTML() {
 
 // High Scores Page --jQuery
 function highScoreHTML() {
-
-    console.log('high')
         // title
     var scoresTitle = $( '<h1>' )
         .text( 'high scores!' );
