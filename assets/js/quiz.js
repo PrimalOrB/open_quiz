@@ -434,7 +434,7 @@ function modalQuestion() {
         .append( answerWrong ); 
 
     var label = $( '<i>' )
-        .addClass( 'subtitle' )
+        .addClass( 'subtitle del' )
         .text( '** Answers will be shuffled while playing the quiz' )
 
     $('.modal-content')  
