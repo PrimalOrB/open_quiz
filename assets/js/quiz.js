@@ -646,48 +646,55 @@ function endGameHTML() {
     timeLeft = 0
 }
 
-// High Scores Page
+// High Scores Page --jQuery
 function highScoreHTML() {
-        // clear container
-    container.innerHTML = ""
-        // clear timer
-    timer.innerHTML = ""
+
+    console.log('high')
+        // title
+    var scoresTitle = $( '<h1>' )
+        .text( 'high scores!' );
     
-        //end game section
-    var scoresDiv = document.createElement( 'div' );
-    scoresDiv.setAttribute( 'id', 'scores-container' );
-    scoresDiv.setAttribute( 'class', 'block' );
-    var scoresTitle = document.createElement( 'h1' );
-    scoresTitle.textContent = 'high scores!';
+        // list container
+    var scoreUl = $( '<ul>' )
+        .attr( 'id', 'scores');
+          
+    var scoreContainer = $( '<div>' )
+        .attr( 'id', 'score-list' )
+        .append( scoreUl );
 
-        // score list
-    var scoreContainer = document.createElement( 'div' );
-    scoreContainer.setAttribute( 'id', 'score-list' );
-    var scoreUl = document.createElement( 'ul' );
-    scoreUl.setAttribute( 'id', 'scores' );
-    scoreContainer.appendChild( scoreUl );
+        // controls      
+    var backButton = $( '<button>' )
+        .attr( 'id', 'back-button' )
+        .text( 'go back' );
 
-        // controls
-    var controlsContainer = document.createElement( 'div' );
-    controlsContainer.setAttribute( 'id', 'controls' );
-    var backButtonDiv = document.createElement( 'div' );
-    var backButton = document.createElement( 'button' );
-    backButton.setAttribute( 'id', 'back-button' );
-    backButton.textContent = 'go back';
-    backButtonDiv.appendChild( backButton );
-    var clearButtonDiv = document.createElement( 'div' );
-    var clearButton = document.createElement( 'button' );
-    clearButton.setAttribute( 'id', 'clear-button' );
-    clearButton.textContent = 'clear high scores';
-    clearButtonDiv.appendChild( clearButton )
-    controlsContainer.appendChild( backButtonDiv );
-    controlsContainer.appendChild( clearButtonDiv );
+    var backButtonDiv = $( '<div>' )
+        .append( backButton );
 
-    scoresDiv.appendChild( scoresTitle );
-    scoresDiv.appendChild( scoreContainer );
-    scoresDiv.appendChild( controlsContainer );
+    var clearButton = $( '<button>' )
+        .attr( 'id', 'clear-button' )
+        .text( 'clear high scores' );
 
-    container.appendChild( scoresDiv )
+    var clearButtonDiv = $( '<div>' )
+        .append( clearButton );
+
+    var controlsConatiner = $( '<div>' )
+        .attr( 'id', 'controls' )
+        .append( backButtonDiv )
+        .append( clearButtonDiv );
+
+    var scoresDiv = $( '<div>' )
+        .attr( 'id', 'scores-container' )
+        .addClass( 'block' )
+        .append( scoresTitle )  
+        .append( scoreContainer )
+        .append( controlsConatiner );
+
+    $('#timer')
+        .html( "" );
+
+    $('#container')
+        .html( "" )
+        .append( scoresDiv );
     
         // get refreshed data after entry of score
     getData()
@@ -702,22 +709,25 @@ function highScoreHTML() {
         timestamp = new Date( highScores[i].timestamp )
         var result = timestamp.toLocaleDateString('en', options);
             // generate li items for appending to ul
-        var  li = document.createElement('li')
-        li.innerHTML = `<div>${i + 1}:   ${highScores[i].initials.toUpperCase()}    (  ${highScores[i].score}   )</div>  <small>${result}</small>`
-        scoreUl.appendChild(li)
+        var li = $( '<li>' )
+            .html( `<div>${i + 1}:   ${highScores[i].initials.toUpperCase()}    (  ${highScores[i].score}   )</div>  <small>${result}</small>` )
+
+        $('#scores')
+            .append( li )
     }
 
         // listen to back button to return to start page
-    document.getElementById( 'back-button' ).addEventListener( 'click', function() { 
+    $('#back-button').click( function() {
         event.preventDefault();
         startHTMl();
-    })
+    })    
+   
         // listen to clear button to clear the high scores
-    document.getElementById( 'clear-button' ).addEventListener( 'click', function() { 
+    $('#clear-button').click( function() {
         event.preventDefault();
         clearScores();
         highScoreHTML();
-    })
+    })    
 }
 
 // Timer function
