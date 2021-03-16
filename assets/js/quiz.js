@@ -920,10 +920,10 @@ function clearScores() {
 }
 
   // Listen for true / false clicks on answers
-container.addEventListener('click', function(e) {
-      var response = e.target.dataset.response
-        // send response for processing
-      processResponse( response )
+$('#container').click( function(e) {
+    var response = e.target.dataset.response
+      // send response for processing
+    processResponse( response )
 })
 
 // listen for keyboard to answer questions
