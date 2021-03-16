@@ -26,11 +26,17 @@ html, body {
   justify-content: space-around;
 }
 
+#head-sub-container {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+}
+
 .head-item {
   flex-grow: 1;
   max-width: 250px;
-  margin: 5px;
-  padding: 5px 20px;
+  margin: 5px 0;
+  padding: 5px;
   display: flex;
 }
 
@@ -43,6 +49,7 @@ html, body {
 }
 
 #high-button,
+#settings-button,
 #start-button,
 #submit-button,
 #back-button,
@@ -62,6 +69,10 @@ html, body {
   transition: 0.25s ease;
   background-color: var(--color-secondary);
   box-shadow: 1px 2px 4px 0px rgba(0, 0, 0, 0.35);
+}
+
+#high-button .fas {
+  margin-right: 1em;
 }
 
 #add-submit {
@@ -93,6 +104,7 @@ html, body {
 }
 
 #high-button:hover,
+#settings-button:hover,
 #start-button:hover,
 #submit-button:hover,
 #back-button:hover,
@@ -110,6 +122,7 @@ html, body {
 }
 
 #high-button:active,
+#settings-button:active,
 #start-button:active,
 #submit-button:active,
 #back-button:active,

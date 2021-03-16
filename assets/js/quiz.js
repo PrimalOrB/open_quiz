@@ -23,9 +23,26 @@ $('#high-scores').click( function() {
     if ( confirmExit) {
             // stop the interval 
         clearInterval(timeInterval)
+        timeLeft = 0
             // proceed to high score page
         highScoreHTML() 
     }
+})    
+
+// settings Scored Button Click --jQuery
+$('#settings-gear').click( function() { 
+        // prevent button default
+    event.preventDefault();
+        // run pause quiz to see if confirmation of aborting active quiz is required
+    var confirmExit = pauseQuiz()
+        // if true
+    if ( confirmExit) {
+            // stop the interval 
+        clearInterval(timeInterval)
+        timeLeft = 0
+            // proceed to high score page
+        questionsPage() 
+    }   
 })    
 
     // get settings
@@ -80,18 +97,9 @@ function startHTMl() {
         storeQuestions()
     }
 
-    var questionBut = $( '<button>' )
-        .attr( 'id', 'question-list-but' )
-        .text( 'You currently have ' + questions.length + ' questions in your game. Click here to add questions, or change game settings' )
-
-    var questionDiv = $( '<div>' )
-        .attr( 'id', 'question-stick' )
-        .append( questionBut );
-
     $('#container')
         .html( "" )
         .append( startDiv )
-        .append( questionDiv );
 
         // listen to start button to begin the quiz
     $('#start-button').click( function() {
@@ -117,16 +125,13 @@ function startHTMl() {
 
 // Questions / Settings Page
 function questionsPage() {
+
          // clear container
     container.innerHTML = ""
          // clear timer
     timer.innerHTML = ""
         // get settings
     getSettings()
-    // perTime = settings['setting-time-per'] ? settings['setting-time-per'] : 8;
-    // penaltyTime = settings['setting-time-penalty'] ? settings['setting-time-penalty'] : 8;
-    // bonusTime = settings['setting-time-bonus'] ? settings['setting-time-bonus'] : 8;
-
      
          //end game section
      var questionsDiv = document.createElement( 'div' );
@@ -525,6 +530,8 @@ function addNewEntry(event) {
 function pauseQuiz() {
         // default to true
     var response = true
+
+    console.log(timeLeft)
         // timer is running if there is timeLeft value above zero
     if ( timeLeft > 0 ) {
             // hold timer value by adding interval to offset the -- of the timer

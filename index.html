@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,14 +8,21 @@
     <title>Open Quiz Game</title>
     <link rel="stylesheet" href="./assets/styles/style.css">
 </head>
+
 <body>
 
     <!-- header element -->
     <header>
         <!-- container for head elemend to utilize flexbox -->
         <div id="head-container">
-            <!-- div to hold button for high scores link -->
-            <div class="head-item" id="high-scores"><button id="high-button">view high scores</button></div>
+            <div id="head-sub-container">
+                <!-- div to hold button for high scores link -->
+                <div class="head-item" id="high-scores"><button id="high-button"><i class="fas fa-list-ul"></i>high
+                        scores</button></div>
+                <!-- div to hold button for high scores link -->
+                <div class="head-item" id="settings-gear"><button id="settings-button"><i
+                            class="fas fa-cogs"></i></button></div>
+            </div>
             <!-- div to hold timer -->
             <div class="head-item" id="timer"></div>
         </div>
@@ -24,20 +32,24 @@
         <!-- HTML content generated in JS and is cleared / regenerated depending on the portion of the quiz in progress -->
     </main>
 
-        <!-- The Modal -->
+    <!-- The Modal -->
     <div id="addNewModal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
             <span class="close">&times;</span>
-                <form class="form-container" autocomplete="off">
-                </form>
+            <form class="form-container" autocomplete="off">
+            </form>
         </div>
-    </div>    
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+    <script src="https://kit.fontawesome.com/20930007b6.js" crossorigin="anonymous"></script>
+
 
     <script src="./assets/js/quiz.js"></script>
 </body>
+
 </html>
