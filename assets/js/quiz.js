@@ -1,6 +1,21 @@
-// Single Page Element Generation
+// global variables
+var questionEl, 
+    questionID, 
+    timeInterval, 
+    timeLeft,
+    perTime, //global perTime
+    penaltyTime, // global penaltyTime
+    bonusTime, // global bonusTime
+    settings = {}, // init settings
+    highScores = getData(); // load storage data as current highScores array
+
+// capture container and timer as variables
 var container = document.getElementById( 'container' );
-var highScoreButton = document.getElementById( 'high-scores' ).addEventListener( 'click', function() {
+var timer = document.getElementById('timer');
+
+// High Scored Button Click --jQuery
+$('#high-scores').click( function() { 
+        // prevent button default
     event.preventDefault();
         // run pause quiz to see if confirmation of aborting active quiz is required
     var confirmExit = pauseQuiz()
@@ -11,14 +26,9 @@ var highScoreButton = document.getElementById( 'high-scores' ).addEventListener(
             // proceed to high score page
         highScoreHTML() 
     }
-})
-var timer = document.getElementById('timer');
-var questionEl, questionID, timeInterval, timeLeft; 
-    // load storage data as current highScores array
-var highScores = getData();
-    // load settings settings
-var perTime, penaltyTime, bonusTime;
-var settings = {};
+})    
+
+    // get settings
 getSettings();
 
 // On page load, populate DOM with start page
@@ -37,59 +47,70 @@ function getQuestions() {
     questions = JSON.parse( localStorage.getItem( 'quiz-questions' ) );
 }
 
-// Start Page
+// Start Page --jQuery
 function startHTMl() {
+        // load questions
     getQuestions()
+
+        //title section 
+    var startTitle = $( '<h1>' )
+        .text( 'question and answer' );
+
+    var startPara = $( '<p>' )
+        .text( 'Read the question and choose the right answer' );
+
+    var startButton = $( '<button>' )
+        .attr( 'id', 'start-button' )
+        .text( 'start quiz' );
         
-        // clear container
-    container.innerHTML = ""
+    var buttonDiv  = $( '<div>' )
+        .append( startButton )
 
-        //title section
-    var startDiv = document.createElement( 'div' );
-    startDiv.setAttribute( 'id', 'start-el' );
-    startDiv.setAttribute( 'class', 'block' );
-    var startTitle = document.createElement( 'h1' );
-    startTitle.textContent = 'question and answer'
-    var startPara = document.createElement( 'p' );
-    startPara.innerHTML = `Read the question and choose the right answer`;
-    var buttonDiv = document.createElement( 'div' )
-    var startButton = document.createElement( 'button' );
-    startButton.setAttribute( 'id', 'start-button');
-    startButton.textContent = 'start quiz';
-    buttonDiv.appendChild( startButton )
-    startDiv.appendChild( startTitle );
-    startDiv.appendChild( startPara );
-    startDiv.appendChild( buttonDiv );
-    container.appendChild( startDiv );
-
-        // question list
-    var questionDiv = document.createElement( 'div' );
-    questionDiv.setAttribute( 'id', 'question-stick' )
-    var questionBut = document.createElement( 'button' );
-    questionBut.setAttribute( 'id', 'question-list-but');
+    var startDiv = $( '<div>' )
+        .attr( 'id', 'start-el' )
+        .addClass( 'block' )
+        .append( startTitle )
+        .append( startPara )
+        .append( buttonDiv )
+   
+    // question / settings button
+        // if no questions, make empty array and set to storage    
     if( !questions ) { 
         questions = []
         storeQuestions()
     }
-    questionBut.textContent = 'You currently have ' + questions.length + ' questions in your game. Click here to add questions, or change game settings';
-    questionDiv.appendChild( questionBut );
 
-    container.appendChild( questionDiv );
+    var questionBut = $( '<button>' )
+        .attr( 'id', 'question-list-but' )
+        .text( 'You currently have ' + questions.length + ' questions in your game. Click here to add questions, or change game settings' )
+
+    var questionDiv = $( '<div>' )
+        .attr( 'id', 'question-stick' )
+        .append( questionBut );
+
+    $('#container')
+        .html( "" )
+        .append( startDiv )
+        .append( questionDiv );
 
         // listen to start button to begin the quiz
-    document.getElementById( 'start-button' ).addEventListener( 'click', function() { 
+    $('#start-button').click( function() {
+            // prevent button action
         event.preventDefault();
+            // refresh question list
         getQuestions()
+            // alert if no questions, otherwise proceed to game
         if( questions.length === 0 ) {
             alert('You currently have no questions!')
         } else {
             questionHTML();
         }
-    })
+    })    
 
-       // listen to start button to begin the quiz
-       document.getElementById( 'question-list-but' ).addEventListener( 'click', function() { 
+    $('#question-list-but').click( function() {
+            // prevent button action
         event.preventDefault();
+            // proceed to questions / settings page
         questionsPage();
     })
 }
@@ -222,11 +243,17 @@ function questionsPage() {
          questionUl.appendChild(li)
      }
 
+     
         // listen to add button to open modal
-    document.getElementById( 'add-button' ).addEventListener( 'click', function() { 
-        // console.log('add new open modal')
+     $('#add-button').click( function() {
+        modalQuestion()
         modalControl()
-    })
+     })
+
+    // document.getElementById( 'add-button' ).addEventListener( 'click', function() { 
+    //     // console.log('add new open modal')
+    //     modalControl()
+    // })
  
          // listen to back button to return to start page
      document.getElementById( 'back-button' ).addEventListener( 'click', function() { 
@@ -318,84 +345,169 @@ function questionsPage() {
 
 }
 
-// Modal Operation
+// Modal Operation --jQuery
 function modalControl() {
         // modal
     var modal = document.getElementById("addNewModal");
         // display modal
     modal.style.display = "block";
 
-        // span (close button)
-    var span = document.getElementsByClassName("close")[0];
-
-        //button (add button)
-    var button = document.getElementById( 'add-submit' )
+    $('#question_new')
+        .focus();
 
         // close on clicking span
-    span.onclick = function() {
+    $('span').click( function() {
         modal.style.display = "none";
-    }
+    })
 
         // close on click outside modal
     window.onclick = function(event) {
     if (event.target == modal) {
         modal.style.display = "none";
+        $('.del').remove()
         }
     }
 }
 
-// Add new
+// Modal Content --jQuery
+function modalQuestion() {
+    var submitButton = $('<button>')
+        .attr('id', 'add-submit' )
+        .text( 'add new question' );
+    var submit = $( '<div>' )
+        .addClass( 'form-line del' )
+        .append( submitButton )
+
+    var questionLabel = $( '<label>' )
+        .attr( 'for', 'question_new' )
+        .text( 'Question:' );
+
+    var questionInput = $( '<input>' )
+        .attr( 'type', 'text' )
+        .attr( 'id', 'question-new' )
+        .attr( 'placeholder', 'New Question' );
+
+    var question = $( '<div>' )
+        .addClass( 'form-line del' )
+        .append( questionLabel )
+        .append( questionInput );
+
+    var answerCorrectLabel = $( '<label>' )
+        .attr( 'for', 'answer_1' )
+        .text( 'Correct Answer:' );
+
+    var answerCorrectInput = $( '<input>' )
+        .attr( 'type', 'text' )
+        .attr( 'id', 'answer_1' )
+        .attr( 'placeholder', 'Correct Answer' )
+        .attr( 'data-answer', 'true' )
+        .addClass( 'correct-answer answer-entry' );
+
+    var answerCorrect = $( '<div>' )
+        .addClass( 'form-line del' )
+        .append( answerCorrectLabel )
+        .append( answerCorrectInput );
+
+    $('.form-container')
+        .append( submit )
+        .append( question )
+        .append( answerCorrect )   
+      
+    modalAnswers()    
+    
+    var addSubmitButton = document.getElementById( 'add-submit' )
+    addSubmitButton.addEventListener( "click", addNewEntry )
+}
+
+// Modal Answers (dynamic) --jQuery
+function modalAnswers() {
+    var answerWrongLabel = $( '<label>' )
+        .attr( 'for', 'answer_false' )
+        .text( 'Wrong Answer:' );
+
+    var answerWrongInput = $( '<input>' )
+        .attr( 'type', 'text' )
+        .attr( 'id', 'answer_false' )
+        .attr( 'placeholder', 'Enter Wrong Answer' )
+        .attr( 'data-answer', 'false' )
+        .addClass( 'wrong-answer answer-entry' );
+
+    var answerWrong = $( '<div>' )
+        .addClass( 'form-line del' )
+        .append( answerWrongLabel )
+        .append( answerWrongInput );
+
+    var answerWrongLabelDisabled = $( '<label>' )
+        .attr( 'for', 'answer_false' )
+        .text( 'Wrong Answer:' );
+
+    var answerWrongInputDisabled = $( '<input>' )
+        .attr( 'type', 'text' )
+        .attr( 'id', 'answer_false' )
+        .attr( 'placeholder', 'Click to add new wrong answer' )
+        .attr( 'data-answer', 'false' )
+        .addClass( 'placeholder' )
+        .attr( 'readonly', 'readonly' );
+
+    var answerWrongDisabled = $( '<div>' )
+        .addClass( 'form-line del' )
+        .append( answerWrongLabelDisabled )
+        .append( answerWrongInputDisabled );
+
+    $('.form-container')
+        .append( answerWrong )    
+        .append( answerWrongDisabled )
+
+    $('input[readonly]').click(function () {
+        $(this)
+            .closest( 'div' )
+            .remove()
+        modalAnswers()
+        });    
+}
+
+// Add new --jQuery
 function addNewEntry(event) {
     event.preventDefault()
-    var newQuestion = document.getElementById( 'question_new' ).value
-    var newAnswer1 = document.getElementById( 'answer1' ).value
-    var newRadio1 = document.getElementById( 'radio1' ).checked
-    var newAnswer2 = document.getElementById( 'answer2' ).value
-    var newRadio2 = document.getElementById( 'radio2' ).checked
-    var newAnswer3 = document.getElementById( 'answer3' ).value
-    var newRadio3 = document.getElementById( 'radio3' ).checked
-    var newAnswer4 = document.getElementById( 'answer4' ).value
-    var newRadio4 = document.getElementById( 'radio4' ).checked
+    
+    var newQuestion = $('#question-new')
+        .val()
+
+    var current = questions.length
+    questions[current] = { 
+        'question': newQuestion,
+        'answersObj': []
+    }
+    
+    var correctAnswer = $('.correct-answer')
+        .val()
+
+    var wrongAnswer = $('.correct-answer')
+        .val()
 
     // check entries for data
-    if( !newQuestion || !newAnswer1 || !newAnswer2 || !newAnswer3 || !newAnswer4 ) {
+    if( !newQuestion || !correctAnswer || !wrongAnswer  ) {
         alert('Please fill in all fields')
         return
     }
 
-    // check radios are not all false
-    if ( !newRadio1 && !newRadio2 && !newRadio3 && !newRadio4 ) {
-        alert('Please check correct answer')
-        return
-    }
+    // push answers to current array
+    $('.answer-entry').each( function( i, obj) {
+        var a = questions[current].answersObj.length
+        console.log(obj.value)
+        questions[current].answersObj[a] = { 'answer': obj.value,       'value': obj.dataset['answer'] }
+    })
 
-    var current = questions.length
-
-    questions[current] = { 
-        'question': newQuestion,
-        'answersObj': [
-            { 'answer': newAnswer1,     'value': newRadio1 },
-            { 'answer': newAnswer2,     'value': newRadio2 },
-            { 'answer': newAnswer3,     'value': newRadio3 },
-            { 'answer': newAnswer4,     'value': newRadio4 },
-        ]
-    }
+        //store the new questions
     storeQuestions()
+        //get the new questions
+    getQuestions()
 
     var modal = document.getElementById("addNewModal");
     modal.style.display = "none";
 
-    document.getElementById( 'question_new' ).value = ""
-    document.getElementById( 'answer1' ).value = ""
-    document.getElementById( 'radio1' ).checked = false
-    document.getElementById( 'answer2' ).value = ""
-    document.getElementById( 'radio2' ).checked = false
-    document.getElementById( 'answer3' ).value = ""
-    document.getElementById( 'radio3' ).checked = false
-    document.getElementById( 'answer4' ).value = ""
-    document.getElementById( 'radio4' ).checked = false
-
     questionsPage()
+    $('.del').remove()
 }
 
 // Pause Quiz
@@ -827,6 +939,3 @@ function processResponse(e) {
     }
 }
 
-//listen for add new question button
-var addSubmitButton = document.getElementById( 'add-submit' )
-addSubmitButton.addEventListener( "click", addNewEntry )
