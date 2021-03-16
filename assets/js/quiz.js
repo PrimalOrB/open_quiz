@@ -510,7 +510,7 @@ function addNewEntry(event) {
     $('.del').remove()
 }
 
-// Pause Quiz
+// Pause Quiz  --JS
 function pauseQuiz() {
         // default to true
     var response = true
@@ -569,7 +569,7 @@ function questionHTML() {
     
 }
 
-// End Game Page
+// End Game Page  --jQuery
 function endGameHTML() {
             // calculate score
     var score = timeLeft
@@ -584,54 +584,61 @@ function endGameHTML() {
         message = `, time ran out with <strong> ${ questions.length - questionID } </strong> ${ ( remainder === 1 ) ? 'question' : 'questions' } left. Save your score!`
     }
    
-        // clear container
-    container.innerHTML = ""
-        // clear timer
-    timer.innerHTML = ""
+    // end game section
+        // title
+    var scoreTitle = $( '<h1>' )
+        .text( 'all done!' );
+        // text
+    var scorePara = $( '<span>' )
+        .attr( 'id', 'score-span' )
+        .html( `Your score is <strong id="score"> ${ score } </strong> ${ message } ` );
+        // form
+        
+    var scoreLabel = $( '<label>' )
+        .attr( 'for', 'initials' )
+        .attr( 'id', 'label' )
+        .text( 'Enter Initials: ' );
+        
+    var scoreInput = $( '<input>' )
+        .attr( 'type', 'text' )
+        .attr( 'placeholder', 'Initials' )
+        .attr( 'id', 'input' );
 
-        //end game section
-    var scoreDiv = document.createElement( 'div' );
-    scoreDiv.setAttribute( 'id', 'question' );
-    scoreDiv.setAttribute( 'class', 'block' );
-    var scoreTitle = document.createElement( 'h1' );
-    scoreTitle.textContent = 'all done!';
+    var scoreButton = $( '<button>' )
+        .attr( 'type', 'submit' )
+        .attr( 'id', 'submit-button' )
+        .text( 'submit' );
 
-        //span  
-    var scorePara = document.createElement( 'span' );
-    scorePara.setAttribute( 'id', 'score-span' );
-    scorePara.innerHTML = `Your score is <strong id="score"> ${ score } </strong> ${ message } `;
+    var scoreButtonDiv = $( '<div>' )
+        .append( scoreButton );
+        
+    var scoreForm = $( '<form>' )
+        .attr( 'id', 'submit' )
+        .attr( 'autocomplete', 'off' )
+        .append( scoreLabel )
+        .append( scoreInput )
+        .append( scoreButtonDiv );
 
-        //form
-    var scoreForm = document.createElement( 'form' );
-    scoreForm.setAttribute( 'id', 'submit' );
-    scoreForm.setAttribute( 'autocomplete', 'off' )
-    var scoreLabel = document.createElement( 'label' );
-    scoreLabel.setAttribute( 'for', 'initials');
-    scoreLabel.setAttribute( 'id', 'label' );
-    scoreLabel.textContent = 'Enter initials: ';
-    var scoreInput = document.createElement( 'input' );
-    scoreInput.setAttribute( 'type', 'text');
-    scoreInput.setAttribute( 'placeholder', 'Initials');
-    scoreInput.setAttribute( 'id', 'input');
-    var scoreButtonDiv = document.createElement( 'div' );
-    var scoreButton = document.createElement( 'button' );
-    scoreButton.setAttribute( 'type', 'submit');
-    scoreButton.setAttribute( 'id', 'submit-button');
-    scoreButton.textContent = 'submit';
-    scoreButtonDiv.appendChild( scoreButton );
-    scoreForm.appendChild( scoreLabel );
-    scoreForm.appendChild( scoreInput );
-    scoreForm.appendChild( scoreButtonDiv );
-    scoreDiv.appendChild( scoreTitle );
-    scoreDiv.appendChild( scorePara );
-    scoreDiv.appendChild( scoreForm );
-    container.appendChild( scoreDiv );
+    var scoreDiv = $( '<div>' )
+        .attr( 'id', 'question' )
+        .addClass( 'block' )
+        .append( scoreTitle )
+        .append( scorePara )
+        .append( scoreForm )
+
+    $('#container')
+        .html( "" )
+        .append(scoreDiv)
+
+    $('#timer')
+        .html( "" )    
 
         // focus keyboard to entry field
-    scoreInput.focus();
+    $('input')
+        .focus()
    
         // listen to submit button to go to high score page
-    document.getElementById( 'submit' ).addEventListener( 'submit', function() {
+    $('form').submit( function() {
         event.preventDefault();
         var initials = document.getElementById( 'input' ).value.toLowerCase()
             // verify that initials are entered
@@ -643,6 +650,7 @@ function endGameHTML() {
         storeData(initials, score)
         highScoreHTML()
     })
+
     timeLeft = 0
 }
 
@@ -730,7 +738,7 @@ function highScoreHTML() {
     })    
 }
 
-// Timer function
+// Timer function   --JS
 function timerStart() {
     perTime = settings['setting-time-per'] ? settings['setting-time-per'] : 8;
     // set timer value based on the number of questions
@@ -771,7 +779,7 @@ function bonus() {
         .append( bonus )
 }
 
-// Init Quiz
+// Init Quiz  --JS
 function initQuiz() {
         // reset question counter
     questionID = -1
@@ -815,7 +823,7 @@ function iterateQuiz() {
     } 
 }
 
-// Shuffle Arrays
+// Shuffle Arrays  --JS
 function shuffle(a) {
     for ( var i = 0; i < a.length; i++ ) {
         // select a random number up to the length of the array
@@ -829,7 +837,7 @@ function shuffle(a) {
     }
 };
 
-// Store user data
+// Store user data  --JS
 function storeData( initials, score ) {
         // capture a timestamp as a unique ID
     var now = new Date().getTime();
@@ -842,7 +850,7 @@ function storeData( initials, score ) {
     localStorage.setItem('stored-scores', stringEntry)
 }
 
-// get stored user data
+// get stored user data  --JS
 function getData() {
         // declare as empty array
     highScores = []
@@ -858,7 +866,7 @@ function getData() {
     return highScores
 }
 
-// Store user data
+// Store user data  --JS
 function storeSettings( e ) {
 
     var stringEntry = JSON.stringify( settings )
@@ -866,7 +874,7 @@ function storeSettings( e ) {
     localStorage.setItem('quiz-stored-settings', stringEntry)
 }
 
-// get settings
+// get settings  --JS
 function getSettings() {
     // declare as empty array
     settings = {}
@@ -888,13 +896,13 @@ function getSettings() {
     return settings
 }
 
-// sort user data
+// sort user data  --JS
 function sortData() {
     highScores.sort( ( a, b ) => b.score-a.score )
     // stack overflow: https://stackoverflow.com/questions/54623130/javascript-sort-an-array-of-objects-by-a-numeric-property-in-each-object/54623139
 }
 
-// clear high scores
+// clear high scores  --JS
 function clearScores() {
         // empty local highscores array
     highScores = []
