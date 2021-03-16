@@ -749,24 +749,26 @@ function timerStart() {
     }, 1000); 
 }
 
-// Penalize Time
+// Penalize Time  --jQuery
 function penalize() {
     timeLeft = timeLeft - penaltyTime
 
-    var penalty = document.createElement( 'div' );
-    penalty.setAttribute( 'class', 'penalty' );
-    penalty.textContent = `- ${penaltyTime}s`
-    timer.appendChild( penalty )
+    var penalty = $( '<div>' )
+        .addClass( 'penalty' )
+        .text( `- ${penaltyTime}s` );
+    $('#timer')
+        .append( penalty )
 }
 
-// Bonus Time
+// Bonus Time  --jQuery
 function bonus() {
     timeLeft = timeLeft + bonusTime
 
-    var bonus = document.createElement( 'div' );
-    bonus.setAttribute( 'class', 'bonus' );
-    bonus.textContent = `+ ${bonusTime}s`
-    timer.appendChild( bonus )
+    var bonus = $( '<div>' )
+        .addClass( 'bonus' )
+        .text( `- ${bonusTime}s` );
+    $('#timer')
+        .append( bonus )
 }
 
 // Init Quiz
