@@ -783,7 +783,7 @@ function initQuiz() {
     iterateQuiz()
 }
 
-// Iterate through quiz questions
+// Iterate through quiz questions  --jQuery
 function iterateQuiz() {
         // iterate question counter
     questionID = questionID + 1 
@@ -793,14 +793,19 @@ function iterateQuiz() {
         shuffle(questions[questionID].answersObj)
             // generate HTML and display random question
         questionEl.textContent = questions[questionID].question
-        var ol = document.getElementById('ol')
-        ol.innerHTML = ""
+
+            // clear OL
+        $('ol')
+            .html( "" )
+
             // loop in shuffled answer
         for ( var i = 0; i < questions[questionID].answersObj.length; i++ ) {
-            var li = document.createElement('li')
-            li.textContent = questions[questionID].answersObj[i].answer
-            li.setAttribute( 'data-response', questions[questionID].answersObj[i].value )
-            ol.appendChild(li)
+                // create new li and append
+            var li = $( '<li>' )
+                .text( questions[questionID].answersObj[i].answer )
+                .attr( 'data-response', questions[questionID].answersObj[i].value )
+            $('ol')
+                .append( li )
         }
     } else {
             // change to end game page
