@@ -142,129 +142,128 @@ function startHTMl() {
     })
 }
 
-// Questions / Settings Page
+// Questions / Settings Page --jQuery
 function questionsPage() {
 
-         // clear container
-    container.innerHTML = ""
-         // clear timer
-    timer.innerHTML = ""
         // get settings
     getSettings()
-     
-         //end game section
-     var questionsDiv = document.createElement( 'div' );
-     questionsDiv.setAttribute( 'id', 'questions-container' );
-     questionsDiv.setAttribute( 'class', 'block' );
 
-    // head
-    var headerBlock = document.createElement( 'div' );
-    headerBlock.setAttribute( 'class', 'questions-header' )
+    var addButton =$( '<button>' )
+        .attr( 'id', 'add-button' )
+        .text( 'add new questions' );
 
+    var addButtonDiv = $( '<div>' )
+        .append( addButton );
 
-     var questionsTitle = document.createElement( 'h1' );
-     questionsTitle.textContent = 'question list';
-     var addButtonDiv = document.createElement( 'div' );
-     var addButton = document.createElement( 'button' );
-     addButton.setAttribute( 'id', 'add-button' );
-     addButton.textContent = 'add new questions';
-     addButtonDiv.appendChild( addButton );
-     headerBlock.appendChild( questionsTitle )
-     headerBlock.appendChild( addButtonDiv )
- 
-         // score list
-     var questionContainer = document.createElement( 'div' );
-     questionContainer.setAttribute( 'id', 'question-list' );
-     questionContainer.setAttribute( 'class', 'question-list' );
-     var questionUl = document.createElement( 'ul' );
-     questionUl.setAttribute( 'id', 'q-ul' );
-     questionUl.setAttribute( 'class', 'q-ul' );
-     questionContainer.appendChild( questionUl );
- 
-         // controls
-     var controlsContainer = document.createElement( 'div' );
-     controlsContainer.setAttribute( 'id', 'controls' );
-     var backButtonDiv = document.createElement( 'div' );
-     var backButton = document.createElement( 'button' );
-     backButton.setAttribute( 'id', 'back-button' );
-     backButton.textContent = 'go back';
-     backButtonDiv.appendChild( backButton );
-     controlsContainer.appendChild( backButtonDiv );
+    var questionsTitle = $( '<h1>' )
+       .text( 'question list' )
 
+    var headerBlock = $( '<div>' )
+       .addClass( 'questions-header' )
+       .append( questionsTitle )
+       .append( addButtonDiv )
 
-        // settings
-    var settingsDiv = document.createElement( 'div' );
-    settingsDiv.setAttribute( 'id', 'settings-div' );
-    var settingsTitle = document.createElement( 'h1' );
-    settingsTitle.textContent = 'Settings';
+    var questionUl = $( '<ul>' )
+        .attr( 'id', 'q-ul' )
+        .addClass( 'q-ul' );
+
+    var questionContainer = $( '<div>' )
+        .attr( 'id', 'question-list' )
+        .addClass( 'question-list' )
+        .append( questionUl );
+
+    var settingsTitle = $( '<h1>' )
+        .text( 'Settings' )
+
+        // per
+    var settingTimePerData = $( '<span>' )
+        .text( perTime );  
+        
+    var settingTimePer = $( '<p>' )
+        .text( 'seconds per question' );
+
+    var settingPer = $( '<div>' )
+        .attr( 'id', 'setting-time-per' )  
+        .addClass( 'setting-line' )  
+        .append( settingTimePerData )
+        .append( settingTimePer );
+
+        // penalty
+    var settingTimePenaltyData = $( '<span>' )
+        .text( perTime );  
     
-    var settingPer = document.createElement( 'div' );
-    settingPer.setAttribute( 'class', 'setting-line' );
-    settingPer.setAttribute( 'id', 'setting-time-per' );
-    var settingTimePerData = document.createElement( 'span' );
-    settingTimePerData.textContent = perTime;
-    var settingTimePer = document.createElement( 'p' );
-    settingTimePer.textContent = 'seconds per question';
+    var settingTimePenalty = $( '<p>' )
+        .text( 'second penalty ( wrong answer / remaining questions at the end )' );
 
-    var settingPenalty = document.createElement( 'div' );
-    settingPenalty.setAttribute( 'class', 'setting-line' );
-    settingPenalty.setAttribute( 'id', 'setting-time-penalty' );
-    var settingTimePenaltyData = document.createElement( 'span' );
-    settingTimePenaltyData.textContent = penaltyTime;
-    var settingTimePenalty = document.createElement( 'p' );
-    settingTimePenalty.textContent = 'second penalty ( wrong answer / remaining questions at the end )';
+    var settingPenalty = $( '<div>' )
+        .attr( 'id', 'setting-time-penalty' )  
+        .addClass( 'setting-line' )  
+        .append( settingTimePenaltyData )
+        .append( settingTimePenalty );
 
-    var settingBonus = document.createElement( 'div' );
-    settingBonus.setAttribute( 'class', 'setting-line' );
-    settingBonus.setAttribute( 'id', 'setting-time-bonus' );
-    var settingTimeBonusData = document.createElement( 'span' );
-    settingTimeBonusData.textContent = bonusTime;
-    var settingTimeBonus = document.createElement( 'p' );
-    settingTimeBonus.textContent = 'second bonus ( correct answer )';
+        // penalty
+    var settingTimeBonusData = $( '<span>' )
+        .text( perTime );  
 
-    settingPer.appendChild( settingTimePerData )
-    settingPer.appendChild( settingTimePer )
+    var settingTimeBonus = $( '<p>' )
+        .text( 'second bonus ( correct answer )' );
 
-    settingPenalty.appendChild( settingTimePenaltyData )
-    settingPenalty.appendChild( settingTimePenalty )
+    var settingBonus = $( '<div>' )
+        .attr( 'id', 'setting-time-bonus' )  
+        .addClass( 'setting-line' )  
+        .append( settingTimeBonusData )
+        .append( settingTimeBonus );
 
-    settingBonus.appendChild( settingTimeBonusData )
-    settingBonus.appendChild( settingTimeBonus )
+    var settingsDiv = $( '<div>' )
+        .attr( 'id', 'settings-div' )
+        .append( settingsTitle )
+        .append( settingPer )
+        .append( settingPenalty )
+        .append( settingBonus )
     
-    
-    settingsDiv.appendChild( settingsTitle )
-    settingsDiv.appendChild( settingPer )
-    settingsDiv.appendChild( settingPenalty )
-    settingsDiv.appendChild( settingBonus )
+     var questionsDiv = $( '<div>' )
+        .attr( 'id', 'questions-container' )
+        .addClass( 'block' )
+        .append( headerBlock )
+        .append( questionContainer )
+        .append( settingsDiv )
  
-     questionsDiv.appendChild( headerBlock );
-     questionsDiv.appendChild( questionContainer );
-     questionsDiv.appendChild( controlsContainer );
-     questionsDiv.appendChild( settingsDiv );
- 
-     container.appendChild( questionsDiv )
+     $('#container')
+        .html( '' )
+        .append( questionsDiv )
+        
+
+     $('#timer')
+        .html( '' )   
      
          // get refreshed data
     getQuestions()
          // post question
      for ( var i = 0; i < questions.length; i ++ ) {
              // generate li items for appending to ul
-         var  li = document.createElement('li')
-         li.setAttribute( 'class', 'list-item ')
-         var questionI = questions[i].question;
-         var idHolder = document.createElement( 'i' );
-         var id = i + 1
-         idHolder.textContent = id
-         var questionHolder= document.createElement( 'div' );
-         questionHolder.setAttribute( 'class', 'question-entry' )
-         questionHolder.textContent = `  ${questionI}`  
-         var deleteHolder = document.createElement( 'div' );
-         deleteHolder.setAttribute( 'class', 'delete' );
-         deleteHolder.textContent = 'X'
-         li.appendChild( idHolder )
-         li.appendChild( questionHolder )
-         li.appendChild( deleteHolder )
-         questionUl.appendChild(li)
+        var questionI = questions[i].question;
+
+        var questionHolder = $( '<div>' )
+            .addClass( 'question-entry' )
+            .text( `  ${questionI}`);
+
+        var deleteHolder = $( '<div>' )
+            .addClass( 'delete' )
+            .text( `X`);
+
+        var id = i + 1
+
+        var idHolder = $( '<i>' )
+            .text( id );
+
+        var li = $( '<li>' )
+            .addClass( 'list-item' )
+            .append( idHolder )
+            .append( questionHolder )
+            .append( deleteHolder )
+
+        $('.q-ul')
+            .append( li )
      }
 
      
@@ -274,11 +273,6 @@ function questionsPage() {
         modalControl()
      })
 
-         // listen to back button to return to start page
-     document.getElementById( 'back-button' ).addEventListener( 'click', function() { 
-         event.preventDefault();
-         startHTMl();
-     })
         // listen for click on delete button of question, and remove from array
      $('.q-ul').on('click', '.delete', function() {
         var val = $(this)
