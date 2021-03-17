@@ -564,46 +564,49 @@ function pauseQuiz() {
 
 // Question Game Playing List Page
 function questionHTML() {
+        // get settings
     getSettings()
-        // clear container
-    container.innerHTML = ""
 
-        //question section
-    var questionDiv = document.createElement( 'div' );
-    questionDiv.setAttribute( 'id', 'question' );
-    questionDiv.setAttribute( 'class', 'block' );
-    var questionSpan = document.createElement('span');
-    questionSpan.setAttribute( 'id', 'question-el' );
-    questionSpan.textContent = ' ';
-    questionDiv.appendChild( questionSpan );
-    container.appendChild( questionDiv );
+        // build DOM elements
+    var questionSpan = $( '<span>' )
+        .attr( 'id', 'question-el' )
+        .text( ' ' );
 
-        // answer section
-    var answerDiv = document.createElement('div');
-    answerDiv.setAttribute( 'id', 'answer' );
-    answerDiv.setAttribute( 'class', 'block' );
-    var answerOl = document.createElement('ol');
-    answerOl.setAttribute( 'id', 'ol' )
-    answerDiv.appendChild( answerOl );
-    container.appendChild( answerDiv );
+    var questionDiv = $( '<div>' )
+        .attr( 'id', 'question' )
+        .addClass( 'block' )
+        .append( questionSpan );
 
-        // response section
-    var responseDiv = document.createElement( 'div' );
-    responseDiv.setAttribute( 'id', 'response' );
-    responseDiv.setAttribute( 'class', 'block' );
-    var responseSpan = document.createElement( 'span' );
-    responseSpan.setAttribute( 'id', 'response-el' );
-    responseSpan.textContent = '';
-    var responsePara = document.createElement( 'p' );
-    responseSpan.appendChild( responsePara )
-    responseDiv.appendChild( responseSpan );
-    container.appendChild( responseDiv );
+    var answerOl = $( '<ol>' )
+        .attr( 'id', 'ol' );
+
+    var answerDiv = $( '<div>' )
+        .attr( 'id', 'answer' )
+        .addClass( 'block' )
+        .append( answerOl);
+
+    var responsePara = $( '<p>' );
+
+    var responseSpan = $( '<span>' )
+        .attr( 'id', 'response-el' )
+        .text( '' )
+        .append( responsePara ); 
+
+    var responseDiv = $( '<div>' )
+        .attr( 'id', 'response' )
+        .addClass( 'block' )
+        .append( responseSpan );      
+
+    $('#container')
+        .html( '' )    
+        .append( questionDiv )
+        .append( answerDiv)
+        .append( responseDiv )
 
         // start timer
     timerStart()
         // start quiz
     initQuiz()
-    
 }
 
 // End Game Page  --jQuery
