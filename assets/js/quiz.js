@@ -435,12 +435,12 @@ function modalQuestion() {
         .append( answerCorrectInput );
 
     var answerWrongLabel = $( '<label>' )
-        .attr( 'for', 'answer_false' )
+        .attr( 'for', 'answer-false' )
         .text( 'Wrong Answer:' );
 
     var answerWrongInput = $( '<input>' )
         .attr( 'type', 'text' )
-        .attr( 'id', 'answer_false' )
+        .attr( 'id', 'answer-false' )
         .attr( 'placeholder', 'Enter wrong answer' )
         .attr( 'data-answer', 'false' )
         .addClass( 'wrong-answer answer-entry' );
@@ -477,12 +477,12 @@ function modalQuestion() {
 function modalAnswers() {
     
     var answerWrongLabel = $( '<label>' )
-    .attr( 'for', 'answer_false' )
+    .attr( 'for', 'answer-false' )
     .text( 'Wrong Answer:' );
 
     var answerWrongInput = $( '<input>' )
     .attr( 'type', 'text' )
-    .attr( 'id', 'answer_false' )
+    .attr( 'id', 'answer-false' )
     .attr( 'placeholder', 'Enter wrong answer' )
     .attr( 'data-answer', 'false' )
     .addClass( 'wrong-answer answer-entry' );

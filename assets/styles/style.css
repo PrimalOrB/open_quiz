@@ -85,14 +85,10 @@ html, body {
   display: none
 }  
 
-#add-submit {
-  padding: 20px;
-  font-size: larger;
-}
-
 #add-new-answer {
   background-color: var(--color-primary);
-  margin: 1em;
+  margin: 0.5em 0;
+  font-size: 0.65rem;
 }
 
 .subtitle {
@@ -303,10 +299,10 @@ ol li:active {
 
 #submit {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: space-around;
   align-items: center;
-  /* margin: 15px 0; */
+  margin: 15px 0;
 }
 
 #submit div {
@@ -518,21 +514,14 @@ textarea {
   align-items: center;
 }
 
-.form-line:not(.small) {
+.form-line {
   width: 90%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin: 15px 0;
-}
-
-.small {
-  width: 50%;
+  margin: 5px 0;
 }
 
 .form-line input[type=text] {
-  flex: 5;
-  max-width: 100%;
+  display: block;
+  width: 100%;
   padding: 10px 5px;
   border-radius: 10px;
   margin: 0 10px;
@@ -540,13 +529,17 @@ textarea {
 }
 
 .form-line label {
-  flex: 1;
+  display: block;
   font-size: larger;
   font-weight: bold;
 }
 
 .form-line input[type=text]:focus {
   background-color: var(--color-primary-faded);
+}
+
+.form-container .form-line:nth-of-type(1n+6) label {
+   display: none;
 }
 
 
@@ -560,5 +553,50 @@ textarea {
   #settings-text {
     display: inline
   }  
+
+  #add-submit {
+    padding: 20px;
+    font-size: larger;
+  }
+
+  .small {
+    width: 50%;
+  }
+
+  .form-line {
+    margin: 5px 0;
+  }
+
+  .form-line {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  }
+
+  .form-line input[type=text] {
+    flex: 3;
+  }
+
+  .form-line label {
+    flex: 1;
+  }
+
+  .form-container .form-line:nth-of-type(1n+6) label {
+    display: initial;
+ }
+
+ #submit {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  align-items: center;
+  /* margin: 15px 0; */
+}
+
+#submit div {
+  align-self: flex-start;
+}
+
+
 }
 
