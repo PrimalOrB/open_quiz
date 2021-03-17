@@ -40,7 +40,7 @@ $('#home-link').click( function() {
             // stop the interval 
         clearInterval(timeInterval)
         timeLeft = 0
-            // proceed to high score page
+            // proceed to home page
             startHTMl() 
     }   
 })    
@@ -56,7 +56,7 @@ event.preventDefault();
             // stop the interval 
         clearInterval(timeInterval)
         timeLeft = 0
-            // proceed to high score page
+            // proceed to settings page
         questionsPage() 
     }   
 })   
@@ -90,7 +90,7 @@ function startHTMl() {
 
         //title section 
     var startTitle = $( '<h1>' )
-        .text( 'question and answer' );
+        .text( 'question and answer game' );
 
     var startPara = $( '<p>' )
         .text( 'Read the question and choose the right answer' );
@@ -128,7 +128,10 @@ function startHTMl() {
         getQuestions()
             // alert if no questions, otherwise proceed to game
         if( questions.length === 0 ) {
-            alert('You currently have no questions!')
+            var noQuestions = confirm('You currently have no questions, would you like to add some?')
+            if( noQuestions ) { 
+                questionsPage()
+             }
         } else {
             questionHTML();
         }
