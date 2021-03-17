@@ -151,6 +151,7 @@ function questionsPage() {
         // get settings
     getSettings()
 
+
     var addButton =$( '<button>' )
         .attr( 'id', 'add-button' )
         .text( 'add new questions' );
@@ -193,7 +194,7 @@ function questionsPage() {
 
         // penalty
     var settingTimePenaltyData = $( '<span>' )
-        .text( perTime );  
+        .text( penaltyTime );  
     
     var settingTimePenalty = $( '<p>' )
         .text( 'second penalty ( wrong answer / remaining questions at the end )' );
@@ -206,7 +207,7 @@ function questionsPage() {
 
         // penalty
     var settingTimeBonusData = $( '<span>' )
-        .text( perTime );  
+        .text( bonusTime );  
 
     var settingTimeBonus = $( '<p>' )
         .text( 'second bonus ( correct answer )' );
