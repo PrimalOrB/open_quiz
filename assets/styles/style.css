@@ -416,6 +416,7 @@ small {
 }
 
 .questions-header {
+  margin-top: 2em;
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -426,7 +427,6 @@ small {
 }
 
 #settings-div {
-  margin-top: 2em;
   width: 100%;
   line-height: 1.5;
 }

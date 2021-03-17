@@ -228,9 +228,9 @@ function questionsPage() {
      var questionsDiv = $( '<div>' )
         .attr( 'id', 'questions-container' )
         .addClass( 'block' )
+        .append( settingsDiv )
         .append( headerBlock )
         .append( questionContainer )
-        .append( settingsDiv )
  
      $('#container')
         .html( '' )
