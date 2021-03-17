@@ -562,7 +562,7 @@ function pauseQuiz() {
     return response
 }
 
-// Question Game Playing List Page
+// Question Game Playing List Page --jQuery
 function questionHTML() {
         // get settings
     getSettings()
@@ -709,13 +709,6 @@ function highScoreHTML() {
         .append( scoreUl );
 
         // controls      
-    var backButton = $( '<button>' )
-        .attr( 'id', 'back-button' )
-        .text( 'go back' );
-
-    var backButtonDiv = $( '<div>' )
-        .append( backButton );
-
     var clearButton = $( '<button>' )
         .attr( 'id', 'clear-button' )
         .text( 'clear high scores' );
@@ -725,7 +718,6 @@ function highScoreHTML() {
 
     var controlsConatiner = $( '<div>' )
         .attr( 'id', 'controls' )
-        .append( backButtonDiv )
         .append( clearButtonDiv );
 
     var scoresDiv = $( '<div>' )
@@ -761,13 +753,7 @@ function highScoreHTML() {
         $('#scores')
             .append( li )
     }
-
-        // listen to back button to return to start page
-    $('#back-button').click( function() {
-        event.preventDefault();
-        startHTMl();
-    })    
-   
+  
         // listen to clear button to clear the high scores
     $('#clear-button').click( function() {
         event.preventDefault();
