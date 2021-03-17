@@ -792,7 +792,7 @@ function bonus() {
 
     var bonus = $( '<div>' )
         .addClass( 'bonus' )
-        .text( `- ${bonusTime}s` );
+        .text( `+ ${bonusTime}s` );
     $('#timer')
         .append( bonus )
 }
