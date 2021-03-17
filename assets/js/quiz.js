@@ -965,20 +965,28 @@ function processResponse(e) {
             // add time
             bonus()
             // post true
-            responsePost.children[0].textContent = 'Correct!'
+            responsePost.children[0].textContent = '😄'
             responsePost.children[0].classList.remove('false')
             responsePost.children[0].classList.add('true')
+            responsePost.classList.remove('falsebg')
+            responsePost.classList.add('truebg')
             // go to next question
         iterateQuiz()
     } else if ( e === 'false' ) {
             // remove time
             penalize()
             // post false
-            responsePost.children[0].textContent = 'Wrong!'
+            responsePost.children[0].textContent = '😢'
             responsePost.children[0].classList.remove('true')
             responsePost.children[0].classList.add('false')
+            responsePost.classList.remove('truebg')
+            responsePost.classList.add('falsebg')
                 // go to next question
             iterateQuiz()
     }
 }
+
+
+
+
 

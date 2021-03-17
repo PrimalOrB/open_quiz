@@ -200,7 +200,7 @@ h1 {
   text-transform: capitalize;
 }
 
-p {
+p:not(#response-el p) {
   text-align: center;
   margin: 20px 0;
   transition: 0.25s;
@@ -211,8 +211,8 @@ p {
   flex: 1;
   width: 100%;
   max-width: 900px;
-  padding: 15px;
-  margin: 10px 0;
+  padding: 15px 0 0 0;
+  margin: 10px 0 0 0;
 }
 
 span {
@@ -277,20 +277,32 @@ ol li:active {
 
 #response-el {
   text-align: center;
-  font-size: xx-large;
+  font-size: 5rem;
   text-transform: capitalize;
-  font-style: italic;
   font-weight: bolder;
   color: black;
   transition: 0.25s ease;
+  border-radius: 50%;
 }
 
 .true {
   color: green;
+  text-shadow: 0px 0px 2.5rem green;
 }
 
 .false {
   color: red;
+  text-shadow: 0px 0px 2.5rem red;
+}
+
+.truebg {
+  background-color: rgba( 0, 255, 0, 0.15);
+  border-radius: 50%;
+}
+
+.falsebg {
+  background-color: rgba( 255, 0, 0, 0.15);
+  border-radius: 50%;
 }
 
 #score-span {
@@ -540,6 +552,20 @@ textarea {
 
 .form-container .form-line:nth-of-type(1n+6) label {
    display: none;
+}
+
+@keyframes my-animation {        
+  from {
+    bottom : -0.5em;
+  }
+  to {
+    bottom : 0;
+  }      
+}
+
+.run-animation {
+  position: relative;
+  animation: my-animation 0.5s ease;
 }
 
 
