@@ -186,6 +186,7 @@ html, body {
   flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
+  padding: 0 0.5em;
 }
 
 #question-stick {
@@ -211,7 +212,7 @@ p:not(#response-el p) {
   flex: 1;
   width: 100%;
   max-width: 900px;
-  padding: 1.25em 1em 0 1em;
+  padding: 0 1em;
   margin: 1em 0 0 0;
 }
 
